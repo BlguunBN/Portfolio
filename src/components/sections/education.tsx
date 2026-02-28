@@ -34,6 +34,18 @@ export function EducationSection() {
           </motion.article>
         ))}
       </div>
+
+      <div className="mt-4 rounded-2xl border border-[#9a6cff]/22 bg-[#1d1d1d]/80 p-4">
+        <p className="text-[11px] tracking-[0.14em] uppercase text-[#cdb8f1]">Currently Learning</p>
+        <ul className="mt-3 space-y-1.5 text-sm text-[#b8afca]">
+          {profile.currentlyLearning.map((topic) => (
+            <li key={topic} className="flex items-start gap-2">
+              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#b58af8]" />
+              <span>{topic}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Section>
   );
 }

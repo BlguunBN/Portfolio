@@ -1,5 +1,6 @@
 export type SkillGroup = {
   title: string;
+  summary: string;
   items: string[];
 };
 
@@ -18,6 +19,7 @@ export type EducationItem = {
 
 export const profile = {
   name: "Bilguuntugs",
+  currentlyLearning: ["AI product design", "System design fundamentals", "Cloud deployment workflows"],
   headline: "Hi, I’m Bilguuntugs (2nd) — I build practical software with a product mindset.",
   role: "Computer Science Student · Product-Oriented Builder",
   location: "Ulaanbaatar → China",
@@ -39,14 +41,17 @@ export const profile = {
   skills: [
     {
       title: "Frontend",
-      items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      summary: "I build responsive interfaces with clean hierarchy and fast user flows.",
+      items: ["React", "Next.js"],
     },
     {
       title: "Backend & Data",
-      items: ["Node.js", "REST APIs", "PostgreSQL", "Prisma", "Firebase"],
+      summary: "I design practical APIs and data models for reliable product behavior.",
+      items: ["Node.js", "REST APIs", "Prisma"],
     },
     {
       title: "Workflow & Delivery",
+      summary: "I ship with version control, automation, and deployment-focused habits.",
       items: ["Git/GitHub", "OpenClaw", "Vercel", "CI fundamentals"],
     },
   ] as SkillGroup[],

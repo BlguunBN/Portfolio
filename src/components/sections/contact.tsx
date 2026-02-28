@@ -47,6 +47,7 @@ export function ContactSection() {
             <a
               key={contact.label}
               href={contact.href}
+              data-magnetic="true"
               aria-label={contact.label}
               title={contact.label}
               className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#b084ff]/35 bg-white/[0.04] text-[#efe7ff] transition hover:border-[#ff4d7e]/60 hover:bg-white/10"

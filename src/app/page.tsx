@@ -30,6 +30,7 @@ export default function Home() {
               <a
                 key={item.href}
                 href={item.href}
+                data-magnetic="true"
                 className="rounded-full px-3 py-1.5 text-sm text-[#d8cff8] transition hover:bg-white/10 hover:text-white"
               >
                 {item.label}
