@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --background: #181818;
+  --foreground: #f0eefe;
+  --muted-foreground: #bab4d4;
+
+  --accent-purple: #9a6cff;
+
+  --glass-bg: rgba(24, 24, 24, 0.72);
+  --glass-bg-strong: rgba(24, 24, 24, 0.84);
+  --glass-border: rgba(154, 108, 255, 0.45);
+
+  --surface-glow: 0 0 0 1px rgba(154, 108, 255, 0.35),
+    0 12px 30px rgba(20, 10, 34, 0.35);
+  --surface-glow-hover: 0 0 0 1px rgba(154, 108, 255, 0.5),
+    0 18px 40px rgba(20, 10, 34, 0.45);
+
+  --page-gradient: #181818;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--glass-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--page-gradient);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+
+::selection {
+  background: rgba(154, 108, 255, 0.35);
+  color: #fff7fb;
+}
+
+.glass-panel {
+  background: rgba(24, 24, 24, 0.42);
+  border: 1px solid rgba(154, 108, 255, 0.22);
+  box-shadow: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.glass-panel-strong {
+  background: rgba(24, 24, 24, 0.56);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
