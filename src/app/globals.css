@@ -44,6 +44,10 @@ body {
   overflow-x: hidden;
 }
 
+.custom-cursor-active,
+.custom-cursor-active * {
+  cursor: none !important;
+}
 
 ::selection {
   background: rgba(154, 108, 255, 0.35);

@@ -34,7 +34,9 @@ export function CursorEffects() {
       raf = requestAnimationFrame(animate);
     };
 
-    const magnetics = Array.from(document.querySelectorAll<HTMLElement>("[data-magnetic='true']"));
+    const magnetics = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-magnetic='true']"),
+    );
 
     const handlers = magnetics.map((el) => {
       const onMagMove = (e: MouseEvent) => {
