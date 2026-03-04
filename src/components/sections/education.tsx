@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/src/components/ui/section";
 import { profile } from "@/src/data/profile";
 
 export function EducationSection() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <Section id="education" title="Education" subtitle="My current academic foundation in computer science and AI.">
       <div className="relative pl-6">
@@ -13,10 +15,14 @@ export function EducationSection() {
         {profile.education.map((item, idx) => (
           <motion.article
             key={`${item.school}-${idx}`}
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.35, delay: idx * 0.06 }}
+            {...(shouldReduceMotion
+              ? {}
+              : {
+                  initial: { opacity: 0, y: 14 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, amount: 0.3 },
+                  transition: { duration: 0.35, delay: idx * 0.06 },
+                })}
             className="relative mb-8 last:mb-0"
           >
             <span className="absolute -left-[1.05rem] top-1.5 h-3 w-3 rounded-full border border-[#ffd2e1]/70 bg-[#8f5bff] shadow-[0_0_18px_rgba(143,91,255,0.75)]" />

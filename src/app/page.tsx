@@ -31,7 +31,7 @@ export default function Home() {
                 key={item.href}
                 href={item.href}
                 data-magnetic="true"
-                className="rounded-full px-3 py-1.5 text-sm text-[#d8cff8] transition hover:bg-white/10 hover:text-white"
+                className="rounded-full px-3 py-1.5 text-sm text-[#d8cff8] transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9a6cff] focus-visible:ring-offset-1 focus-visible:ring-offset-black"
               >
                 {item.label}
               </a>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/src/components/ui/section";
 import { profile } from "@/src/data/profile";
 
@@ -23,7 +23,6 @@ function ContactIcon({ label }: { label: string }) {
     );
   }
 
-  // Email fallback icon
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
       <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -33,15 +32,20 @@ function ContactIcon({ label }: { label: string }) {
 }
 
 export function ContactSection() {
+  const shouldReduceMotion = useReducedMotion();
+
+  const motionProps = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 18 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.35 },
+        transition: { duration: 0.4 },
+      };
+
   return (
-    <Section id="contact" title="Contact" subtitle="I’m open to internships, collaboration, and meaningful product work.">
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.35 }}
-        transition={{ duration: 0.4 }}
-        className="border-t border-white/15 pt-5"
-      >
+    <Section id="contact" title="Contact" subtitle="I'm open to internships, collaboration, and meaningful product work.">
+      <motion.div {...motionProps} className="border-t border-white/15 pt-5">
         <div className="flex flex-wrap gap-3">
           {profile.contacts.map((contact) => (
             <a
@@ -50,7 +54,7 @@ export function ContactSection() {
               data-magnetic="true"
               aria-label={contact.label}
               title={contact.label}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#b084ff]/35 bg-white/[0.04] text-[#efe7ff] transition hover:border-[#ff4d7e]/60 hover:bg-white/10"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#b084ff]/35 bg-white/[0.04] text-[#efe7ff] transition hover:border-[#ff4d7e]/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9a6cff] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               <ContactIcon label={contact.label} />
             </a>

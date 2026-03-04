@@ -11,7 +11,7 @@ export function GlassCard({ children, className, interactive = false }: GlassCar
   return (
     <div
       className={clsx(
-        "glass-panel rounded-2xl p-6 transition-all duration-300",
+        "glass-panel rounded-2xl p-6 transition-[transform,border-color,background-color,opacity] duration-300",
         interactive && "hover:-translate-y-0.5 hover:border-[#9a6cff]/40",
         className,
       )}

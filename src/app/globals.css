@@ -17,6 +17,7 @@
     0 18px 40px rgba(20, 10, 34, 0.45);
 
   --page-gradient: #181818;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -32,6 +33,12 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
