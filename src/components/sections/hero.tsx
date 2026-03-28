@@ -4,12 +4,15 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { TiltCard } from "@/src/components/projects/tilt-card";
 import { ButtonLink } from "@/src/components/ui/button-link";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 import { profile } from "@/src/data/profile";
 
 export function HeroSection() {
+  const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
+  const skipMotion = !hydrated || shouldReduceMotion;
 
-  const textMotion = shouldReduceMotion
+  const textMotion = skipMotion
     ? {}
     : {
         initial: { opacity: 0, y: 24 },
@@ -17,7 +20,7 @@ export function HeroSection() {
         transition: { duration: 0.45, ease: "easeOut" as const },
       };
 
-  const imageMotion = shouldReduceMotion
+  const imageMotion = skipMotion
     ? {}
     : {
         initial: { opacity: 0, scale: 0.96 },
@@ -31,7 +34,7 @@ export function HeroSection() {
     <section className="relative overflow-hidden rounded-3xl border border-[#9a6cff]/16 bg-black/10 px-6 py-8 backdrop-blur-[2px] md:px-10 md:py-12">
       <div className="grid items-center gap-10 md:grid-cols-[1.25fr_.75fr]">
         <motion.div {...textMotion} className="space-y-5">
-          <p className="text-sm tracking-[0.18em] text-[#cfb4f4] uppercase">Hello, I'm</p>
+          <p className="text-sm tracking-[0.18em] text-[#cfb4f4] uppercase">Hello, I&apos;m</p>
           <h1 className="text-4xl leading-tight font-semibold text-[#f3efff] md:text-6xl">Bilguuntugs.</h1>
           <h2 className="text-3xl leading-tight font-medium text-[#bcaed7] md:text-5xl">
             Product-minded CS Student

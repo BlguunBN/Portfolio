@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Chip } from "@/src/components/ui/chip";
 import { GlassCard } from "@/src/components/ui/glass-card";
 import { Section } from "@/src/components/ui/section";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 import { projects } from "@/src/data/projects";
 
 const PAGE_SIZE = 2;
@@ -15,7 +16,9 @@ const SWIPE_TRIGGER = 72;
 const SWIPE_VELOCITY_FACTOR = 0.16;
 
 export function ProjectsSection() {
+  const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
+  const skipMotion = !hydrated || shouldReduceMotion;
   const [page, setPage] = useState(0);
   const wheelCarry = useRef(0);
   const wheelLockUntil = useRef(0);
@@ -43,7 +46,7 @@ export function ProjectsSection() {
   }
 
   function handleHorizontalWheel(event: WheelEvent<HTMLDivElement>) {
-    if (shouldReduceMotion || totalPages < 2) return;
+    if (skipMotion || totalPages < 2) return;
     if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
 
     event.preventDefault();
@@ -70,20 +73,20 @@ export function ProjectsSection() {
           className="flex items-stretch"
           animate={{ x: `${-page * 100}%` }}
           transition={
-            shouldReduceMotion
+            skipMotion
               ? { duration: 0 }
               : { type: "spring", stiffness: 240, damping: 30, mass: 0.7 }
           }
-          drag={shouldReduceMotion ? false : "x"}
+          drag={skipMotion ? false : "x"}
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={shouldReduceMotion ? 0 : 0.1}
+          dragElastic={skipMotion ? 0 : 0.1}
           dragMomentum={false}
           onDragEnd={(_, info) => {
             const swipe = info.offset.x + info.velocity.x * SWIPE_VELOCITY_FACTOR;
             if (swipe < -SWIPE_TRIGGER) goBy(1);
             else if (swipe > SWIPE_TRIGGER) goBy(-1);
           }}
-          style={{ cursor: shouldReduceMotion ? "default" : "grab" }}
+          style={{ cursor: skipMotion ? "default" : "grab" }}
         >
           {pages.map((pageProjects, pageIndex) => (
             <div key={pageIndex} className="w-full shrink-0">
@@ -91,7 +94,7 @@ export function ProjectsSection() {
                 {pageProjects.map((project) => (
                   <motion.div
                     key={project.slug}
-                    {...(shouldReduceMotion ? {} : { whileHover: { y: -4 } })}
+                    {...(skipMotion ? {} : { whileHover: { y: -4 } })}
                   >
                     <GlassCard interactive className="h-full min-h-[22rem] select-none">
                       <h3 className="text-xl font-semibold">{project.title}</h3>

@@ -3,9 +3,11 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Chip } from "@/src/components/ui/chip";
 import { Section } from "@/src/components/ui/section";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 import { profile } from "@/src/data/profile";
 
 export function SkillsSection() {
+  const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -18,7 +20,7 @@ export function SkillsSection() {
         {profile.skills.map((group, idx) => (
           <motion.article
             key={group.title}
-            {...(shouldReduceMotion
+            {...(!hydrated || shouldReduceMotion
               ? {}
               : {
                   initial: { opacity: 0, y: 16 },

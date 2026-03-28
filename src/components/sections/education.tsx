@@ -2,9 +2,11 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/src/components/ui/section";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 import { profile } from "@/src/data/profile";
 
 export function EducationSection() {
+  const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -15,7 +17,7 @@ export function EducationSection() {
         {profile.education.map((item, idx) => (
           <motion.article
             key={`${item.school}-${idx}`}
-            {...(shouldReduceMotion
+            {...(!hydrated || shouldReduceMotion
               ? {}
               : {
                   initial: { opacity: 0, y: 14 },

@@ -2,19 +2,22 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/src/components/ui/section";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 import { profile } from "@/src/data/profile";
 
 export function AboutSection() {
+  const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
 
-  const motionProps = shouldReduceMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 18 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.35 },
-        transition: { duration: 0.4 },
-      };
+  const motionProps =
+    !hydrated || shouldReduceMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 18 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.35 },
+          transition: { duration: 0.4 },
+        };
 
   return (
     <Section id="about" title="About" subtitle={`${profile.location} · Building practical software`}>
