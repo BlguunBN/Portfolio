@@ -8,6 +8,7 @@ export type ContactLink = {
   label: string;
   href: string;
   short?: string;
+  note?: string;
 };
 
 export type EducationItem = {
@@ -17,21 +18,70 @@ export type EducationItem = {
   focus: string[];
 };
 
+export type Principle = {
+  title: string;
+  description: string;
+};
+
+export type ProofPoint = {
+  label: string;
+  value: string;
+};
+
 export const profile = {
   name: "Bilguuntugs",
-  currentlyLearning: ["AI product design", "System design fundamentals", "Cloud deployment workflows"],
-  headline: "Hi, I’m Bilguuntugs (2nd) — I build practical software with a product mindset.",
+  heroLabel: "Available for internships, collaborations, and meaningful product work",
+  currentFocus: [
+    "Student-facing tools with cleaner workflows",
+    "AI interfaces that feel calm, useful, and credible",
+    "Software that ships with product-level polish",
+  ],
+  currentlyLearning: [
+    "AI product design",
+    "System design fundamentals",
+    "Cloud deployment workflows",
+  ],
+  headline:
+    "I design and build practical software that feels calm, useful, and considered from the first screen to the final workflow.",
   role: "Computer Science Student · Product-Oriented Builder",
-  location: "Ulaanbaatar → China",
+  location: "Ulaanbaatar / China",
   about:
-    "I enjoy turning real-world friction into clean software experiences. My work usually starts with everyday problems like repetitive messaging and manual workflows, then evolves into practical tools with clear UX and reliable architecture.",
+    "I tend to start from real problems, repetitive workflows, and clunky communication patterns, then shape software that handles them with clarity.",
   mission:
-    "Right now, I’m focused on building useful products end-to-end, sharpening my engineering fundamentals, and growing into an AI-focused software engineer.",
+    "Right now I care most about becoming the kind of builder who can take an idea from rough concept to something real, useful, and polished. Long term, I want to work where AI and product development meet.",
+  supportingIntro:
+    "I am most energized by products that reduce friction without losing personality. That usually means thinking through the interface, the workflow, and the implementation together instead of treating them as separate steps.",
+  contactNote:
+    "If you are building something useful, thoughtful, or a little ambitious, I would be glad to talk.",
+  contactLead: "Best current way to reach me: GitHub or email.",
+  proofPoints: [
+    { label: "Current stage", value: "Second-year CS student" },
+    { label: "Working style", value: "Product-minded and implementation-heavy" },
+    { label: "Looking for", value: "Teams where I can ship meaningful work" },
+  ] as ProofPoint[],
+  principles: [
+    {
+      title: "Start from friction",
+      description:
+        "I look for repetitive, awkward, or overcomplicated workflows first, then design around what would make them feel obvious.",
+    },
+    {
+      title: "Make the interface carry weight",
+      description:
+        "Good products should explain themselves through hierarchy, pacing, and interaction patterns instead of dense instructions.",
+    },
+    {
+      title: "Build for real use",
+      description:
+        "I care less about flashy demos and more about whether the product would still feel strong after the fifth or fiftieth use.",
+    },
+  ] as Principle[],
+  openTo: ["Internships", "Collaboration", "Meaningful product work"],
   education: [
     {
-      period: "2024 — Present",
+      period: "2024 - Present",
       degree: "BSc in Computer Science (Undergraduate)",
-      school: "Xi’an Jiaotong–Liverpool University (XJTLU)",
+      school: "Xi'an Jiaotong-Liverpool University (XJTLU)",
       focus: [
         "Currently in my second year",
         "Studying Computer Science with an AI focus",
@@ -40,24 +90,36 @@ export const profile = {
   ] as EducationItem[],
   skills: [
     {
-      title: "Frontend",
-      summary: "I build responsive interfaces with clean hierarchy and fast user flows.",
-      items: ["React", "Next.js"],
+      title: "Interface Systems",
+      summary:
+        "I design and build interfaces that feel structured, clear, and intentional across desktop and mobile.",
+      items: ["React", "Next.js", "TypeScript", "Interaction design"],
     },
     {
-      title: "Backend & Data",
-      summary: "I design practical APIs and data models for reliable product behavior.",
-      items: ["Node.js", "REST APIs", "Prisma"],
+      title: "Application Logic",
+      summary:
+        "I build APIs and data models that stay understandable, reliable, and practical for real product workflows.",
+      items: ["Node.js", "REST APIs", "Prisma", "Full-stack product flows"],
     },
     {
       title: "Workflow & Delivery",
-      summary: "I ship with version control, automation, and deployment-focused habits.",
-      items: ["Git/GitHub", "OpenClaw", "Vercel", "CI fundamentals"],
+      summary:
+        "I care about versioning, deployment, and iteration speed because polish is not just visual, it is operational too.",
+      items: ["Git/GitHub", "Vercel", "CI fundamentals", "Iteration loops"],
     },
   ] as SkillGroup[],
   contacts: [
-    { label: "GitHub", short: "GH", href: "https://github.com/BlguunBN" },
-    { label: "Email", short: "@", href: "mailto:bilguuntugs@example.com" },
-    { label: "Telegram", short: "TG", href: "https://t.me/" },
+    {
+      label: "GitHub",
+      short: "GH",
+      href: "https://github.com/BlguunBN",
+      note: "Best place to review projects and current work.",
+    },
+    {
+      label: "Email",
+      short: "@",
+      href: "mailto:Bilguuntugs8888@gmail.com",
+      note: "Direct contact for internships, collaborations, or product roles.",
+    },
   ] as ContactLink[],
 };

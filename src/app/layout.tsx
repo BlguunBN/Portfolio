@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { SimpleCursor } from "@/src/components/ui/simple-cursor";
+import { Geist_Mono, Instrument_Serif, Sora } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { ScrollProgress } from "@/src/components/ui/scroll-progress";
+
+import "./globals.css";
+
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
 });
 
@@ -13,33 +15,38 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://2nd-portfolio.vercel.app"),
-  title: "Bilguuntugs (2nd) | Portfolio",
+  metadataBase: new URL("https://t1portfolio.vercel.app"),
+  title: "Bilguuntugs | Product-Oriented Portfolio",
   description:
-    "Portfolio of Bilguuntugs (2nd): practical software projects, engineering work, and product-focused development.",
+    "Portfolio of Bilguuntugs: practical software projects, interface-driven product thinking, and product-focused development.",
   keywords: [
     "Bilguuntugs",
-    "2nd",
     "portfolio",
     "software engineer",
     "computer science",
-    "AI",
+    "product builder",
     "Next.js",
   ],
   openGraph: {
-    title: "Bilguuntugs (2nd) | Portfolio",
+    title: "Bilguuntugs | Product-Oriented Portfolio",
     description:
-      "Practical software projects and product-focused engineering by Bilguuntugs (2nd).",
-    url: "https://2nd-portfolio.vercel.app",
-    siteName: "2nd Portfolio",
+      "Practical software projects and product-focused engineering by Bilguuntugs.",
+    url: "https://t1portfolio.vercel.app",
+    siteName: "Bilguuntugs Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bilguuntugs (2nd) | Portfolio",
+    title: "Bilguuntugs | Product-Oriented Portfolio",
     description:
-      "Practical software projects and product-focused engineering by Bilguuntugs (2nd).",
+      "Practical software projects and product-focused engineering by Bilguuntugs.",
   },
   icons: {
     icon: "/favicon.ico",
@@ -57,9 +64,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${sora.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <SimpleCursor />
+        <ScrollProgress />
         {children}
       </body>
     </html>

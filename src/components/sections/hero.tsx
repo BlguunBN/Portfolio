@@ -1,83 +1,96 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
-import { TiltCard } from "@/src/components/projects/tilt-card";
+
 import { ButtonLink } from "@/src/components/ui/button-link";
-import { useHydrated } from "@/src/hooks/use-hydrated";
 import { profile } from "@/src/data/profile";
+import { useHydrated } from "@/src/hooks/use-hydrated";
+
+const sidebarNotes = [
+  { label: "Now", value: "Studying CS and refining product judgment through shipped software." },
+  { label: "Looking for", value: "Internships and teams where I can contribute to real product work." },
+  { label: "Bias", value: "Interfaces that feel clear, deliberate, and useful without explanation." },
+];
 
 export function HeroSection() {
   const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
-  const skipMotion = !hydrated || shouldReduceMotion;
-
-  const textMotion = skipMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 24 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.45, ease: "easeOut" as const },
-      };
-
-  const imageMotion = skipMotion
-    ? {}
-    : {
-        initial: { opacity: 0, scale: 0.96 },
-        animate: { opacity: 1, scale: 1 },
-        transition: { duration: 0.45, delay: 0.08, ease: "easeOut" as const },
-        whileHover: { y: -6, scale: 1.02 },
-        whileTap: { scale: 0.99, y: -2 },
-      };
+  const animate = hydrated && !shouldReduceMotion;
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-[#9a6cff]/16 bg-black/10 px-6 py-8 backdrop-blur-[2px] md:px-10 md:py-12">
-      <div className="grid items-center gap-10 md:grid-cols-[1.25fr_.75fr]">
-        <motion.div {...textMotion} className="space-y-5">
-          <p className="text-sm tracking-[0.18em] text-[#cfb4f4] uppercase">Hello, I&apos;m</p>
-          <h1 className="text-4xl leading-tight font-semibold text-[#f3efff] md:text-6xl">Bilguuntugs.</h1>
-          <h2 className="text-3xl leading-tight font-medium text-[#bcaed7] md:text-5xl">
-            Product-minded CS Student
-          </h2>
-          <p className="max-w-2xl text-base text-[#bbb1cc] md:text-lg">{profile.mission}</p>
-
-          <div className="flex flex-wrap gap-3 pt-1">
-            <ButtonLink href="#projects">View Projects</ButtonLink>
-            <ButtonLink href="#contact" variant="ghost">
-              Contact Me
-            </ButtonLink>
+    <section id="top" className="min-h-[calc(100vh-6rem)] pt-8 md:pt-12">
+      <motion.div
+        initial={animate ? { opacity: 0, y: 24 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="grid gap-10 xl:grid-cols-[minmax(0,1.15fr)_minmax(260px,0.58fr)] xl:items-end"
+      >
+        <div className="space-y-8 md:space-y-10">
+          <div className="space-y-4">
+            <p className="section-kicker">Bilguuntugs</p>
+            <p className="max-w-xl text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+              Computer Science student · Product-oriented builder · Available for internships and thoughtful collaboration
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 pt-2">
-            {profile.contacts.slice(0, 2).map((contact) => (
-              <a
-                key={contact.label}
-                href={contact.href}
-                data-magnetic="true"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/18 bg-white/[0.03] text-xs text-[#e9ddff] transition hover:border-[#b58af8]/55 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9a6cff] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                aria-label={contact.label}
-              >
-                {contact.short ?? contact.label.slice(0, 1)}
-              </a>
+          <div className="max-w-5xl space-y-6">
+            <h1 className="font-display text-[clamp(3.9rem,9.5vw,8rem)] leading-[0.86] tracking-[-0.055em] text-[var(--text)]">
+              Software that feels
+              <span className="block pl-[0.08em]">considered, not assembled.</span>
+            </h1>
+
+            <p className="max-w-3xl text-lg leading-8 text-[var(--text-soft)] md:text-[1.3rem] md:leading-9">
+              {profile.headline}
+            </p>
+
+            <p className="max-w-2xl text-base leading-8 text-[var(--text-muted)] md:text-lg">
+              I am interested in the point where product thinking, interface judgment, and software implementation meet. The goal is not just to ship features. It is to make the work feel coherent.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <ButtonLink href="#projects">View selected work</ButtonLink>
+            <ButtonLink href="#profile" variant="secondary">
+              Read the profile
+            </ButtonLink>
+            <a
+              href="https://github.com/BlguunBN"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-1 inline-flex items-center gap-2 text-sm text-[var(--text-muted)] transition-colors duration-150 hover:text-[var(--text)]"
+            >
+              GitHub
+              <span className="text-[var(--accent)]">↗</span>
+            </a>
+          </div>
+
+          <div className="section-rule grid gap-4 pt-5 md:grid-cols-3 md:gap-6">
+            {profile.currentFocus.map((item, index) => (
+              <div key={item} className="space-y-3">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">0{index + 1}</p>
+                <p className="max-w-sm text-sm leading-7 text-[var(--text-soft)]">{item}</p>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div {...imageMotion} className="mx-auto w-full max-w-[280px]">
-          <TiltCard className="overflow-hidden rounded-2xl border border-[#9a6cff]/34 bg-[#1f1f1f] p-2 shadow-[0_0_0_1px_rgba(154,108,255,0.22),0_8px_22px_rgba(30,16,52,0.22)]">
-            <div className="relative aspect-square rounded-xl overflow-hidden bg-[#222222]">
-              <Image
-                src="/hero/frieren.gif"
-                alt="Frieren — my current favorite anime character"
-                fill
-                className="object-cover"
-                priority
-                unoptimized
-              />
+        <aside className="xl:pb-3">
+          <div className="section-rule space-y-6 pt-5">
+            <p className="max-w-xs font-display text-[2rem] leading-[1.02] tracking-[-0.035em] text-[var(--text)]">
+              Building practical software with sharper product taste.
+            </p>
+
+            <div className="space-y-5">
+              {sidebarNotes.map((item) => (
+                <div key={item.label} className="grid gap-2 border-b border-[var(--line)] pb-4 last:border-b-0 last:pb-0">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">{item.label}</p>
+                  <p className="text-sm leading-7 text-[var(--text-soft)]">{item.value}</p>
+                </div>
+              ))}
             </div>
-          </TiltCard>
-        </motion.div>
-      </div>
+          </div>
+        </aside>
+      </motion.div>
     </section>
   );
 }

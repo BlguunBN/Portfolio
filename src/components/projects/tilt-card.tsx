@@ -13,16 +13,13 @@ type TiltCardProps = {
 export function TiltCard({ children, maxTilt = 8, className }: TiltCardProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (!media.matches) {
-      setEnabled(true);
-    }
 
     const listener = (event: MediaQueryListEvent) => {
       setEnabled(!event.matches);
@@ -88,4 +85,3 @@ export function TiltCard({ children, maxTilt = 8, className }: TiltCardProps) {
     </motion.div>
   );
 }
-

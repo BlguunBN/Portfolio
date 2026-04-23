@@ -2,17 +2,26 @@ import type { ReactNode } from "react";
 
 type SectionProps = {
   id: string;
+  eyebrow: string;
   title: string;
-  subtitle?: string;
+  description?: string;
   children: ReactNode;
 };
 
-export function Section({ id, title, subtitle, children }: SectionProps) {
+export function Section({ id, eyebrow, title, description, children }: SectionProps) {
   return (
-    <section id={id} className="scroll-mt-24">
-      <div className="mb-6">
-        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{title}</h2>
-        {subtitle ? <p className="text-muted mt-2 max-w-2xl">{subtitle}</p> : null}
+    <section id={id} className="scroll-mt-24 space-y-8 md:space-y-12">
+      <div className="section-rule grid gap-6 pt-6 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:items-end md:pt-8">
+        <div className="space-y-3">
+          <p className="section-kicker">{eyebrow}</p>
+          <h2 className="max-w-xl font-display text-[clamp(2.2rem,4vw,4rem)] leading-[0.94] tracking-[-0.04em] text-[var(--text)]">
+            {title}
+          </h2>
+        </div>
+
+        {description ? (
+          <p className="max-w-2xl text-base leading-8 text-[var(--text-soft)] md:text-lg">{description}</p>
+        ) : null}
       </div>
       {children}
     </section>

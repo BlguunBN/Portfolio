@@ -1,172 +1,113 @@
 "use client";
 
-import { useMemo, useRef, useState, type WheelEvent } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Chip } from "@/src/components/ui/chip";
-import { GlassCard } from "@/src/components/ui/glass-card";
-import { Section } from "@/src/components/ui/section";
-import { useHydrated } from "@/src/hooks/use-hydrated";
-import { projects } from "@/src/data/projects";
+import { motion, useReducedMotion } from "framer-motion";
 
-const PAGE_SIZE = 2;
-const WHEEL_TRIGGER = 56;
-const WHEEL_LOCK_MS = 300;
-const SWIPE_TRIGGER = 72;
-const SWIPE_VELOCITY_FACTOR = 0.16;
+import { ProjectPreview } from "@/src/components/projects/project-preview";
+import { Section } from "@/src/components/ui/section";
+import { projects } from "@/src/data/projects";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 
 export function ProjectsSection() {
   const hydrated = useHydrated();
   const shouldReduceMotion = useReducedMotion();
-  const skipMotion = !hydrated || shouldReduceMotion;
-  const [page, setPage] = useState(0);
-  const wheelCarry = useRef(0);
-  const wheelLockUntil = useRef(0);
-
-  const pages = useMemo(
-    () =>
-      Array.from({ length: Math.ceil(projects.length / PAGE_SIZE) }, (_, i) =>
-        projects.slice(i * PAGE_SIZE, i * PAGE_SIZE + PAGE_SIZE),
-      ),
-    [],
-  );
-
-  const totalPages = pages.length;
-
-  function clampPage(nextPage: number) {
-    return Math.min(totalPages - 1, Math.max(0, nextPage));
-  }
-
-  function goTo(nextPage: number) {
-    setPage(clampPage(nextPage));
-  }
-
-  function goBy(delta: number) {
-    setPage((currentPage) => clampPage(currentPage + delta));
-  }
-
-  function handleHorizontalWheel(event: WheelEvent<HTMLDivElement>) {
-    if (skipMotion || totalPages < 2) return;
-    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
-
-    event.preventDefault();
-    const now = performance.now();
-    if (now < wheelLockUntil.current) return;
-
-    wheelCarry.current += event.deltaX;
-    if (Math.abs(wheelCarry.current) < WHEEL_TRIGGER) return;
-
-    const direction = wheelCarry.current > 0 ? 1 : -1;
-    wheelCarry.current = 0;
-    wheelLockUntil.current = now + WHEEL_LOCK_MS;
-    goBy(direction);
-  }
+  const animate = hydrated && !shouldReduceMotion;
 
   return (
     <Section
       id="projects"
-      title="Featured Projects"
-      subtitle="Selected projects where I solved real problems with practical engineering decisions."
+      eyebrow="Selected work"
+      title="Work framed like products, not just repos."
+      description="The strongest signal on a portfolio is whether the projects feel scoped, useful, and thoughtfully presented. These are the ones that best represent how I think."
     >
-      <div className="relative overflow-hidden" onWheel={handleHorizontalWheel}>
-        <motion.div
-          className="flex items-stretch"
-          animate={{ x: `${-page * 100}%` }}
-          transition={
-            skipMotion
-              ? { duration: 0 }
-              : { type: "spring", stiffness: 240, damping: 30, mass: 0.7 }
-          }
-          drag={skipMotion ? false : "x"}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={skipMotion ? 0 : 0.1}
-          dragMomentum={false}
-          onDragEnd={(_, info) => {
-            const swipe = info.offset.x + info.velocity.x * SWIPE_VELOCITY_FACTOR;
-            if (swipe < -SWIPE_TRIGGER) goBy(1);
-            else if (swipe > SWIPE_TRIGGER) goBy(-1);
-          }}
-          style={{ cursor: skipMotion ? "default" : "grab" }}
-        >
-          {pages.map((pageProjects, pageIndex) => (
-            <div key={pageIndex} className="w-full shrink-0">
-              <div className="grid gap-4 md:grid-cols-2">
-                {pageProjects.map((project) => (
-                  <motion.div
-                    key={project.slug}
-                    {...(skipMotion ? {} : { whileHover: { y: -4 } })}
-                  >
-                    <GlassCard interactive className="h-full min-h-[22rem] select-none">
-                      <h3 className="text-xl font-semibold">{project.title}</h3>
-                      <p className="text-muted mt-2 text-sm">{project.oneLiner}</p>
-                      <p className="text-muted mt-4 text-sm leading-relaxed">{project.summary}</p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {project.stack.map((item) => (
-                          <Chip key={item}>{item}</Chip>
-                        ))}
-                      </div>
-                      <div className="mt-5 flex gap-4 text-sm">
-                        <Link
-                          href={project.links.repo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#d8bbff] hover:text-[#ff8fb2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9a6cff] rounded-sm"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          View code
-                        </Link>
-                        {project.links.demo !== "#" ? (
-                          <Link
-                            href={project.links.demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#d8bbff] hover:text-[#ff8fb2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9a6cff] rounded-sm"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            Live preview
-                          </Link>
-                        ) : null}
-                      </div>
-                    </GlassCard>
-                  </motion.div>
-                ))}
+      <div className="space-y-14 md:space-y-18">
+        {projects.map((project, index) => (
+          <motion.article
+            key={project.slug}
+            initial={animate ? { opacity: 0, y: 24 } : false}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.48, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+            className="section-rule pt-8 md:pt-10"
+          >
+            <div className="grid gap-8 xl:grid-cols-[86px_minmax(0,0.9fr)_minmax(320px,0.95fr)] xl:items-start">
+              <div className="hidden xl:block">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                  0{index + 1}
+                </p>
               </div>
+
+              <div className={index % 2 === 1 ? "xl:order-2" : undefined}>
+                <div className="space-y-5">
+                  <div className="space-y-3">
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                      {project.category}
+                    </p>
+                    <div className="space-y-2">
+                      <h3 className="font-display text-[clamp(2.1rem,4vw,3.6rem)] leading-[0.94] tracking-[-0.045em] text-[var(--text)]">
+                        {project.title}
+                      </h3>
+                      <p className="max-w-xl text-lg leading-8 text-[var(--text-soft)]">{project.tagline}</p>
+                    </div>
+                  </div>
+
+                  <p className="max-w-2xl text-base leading-8 text-[var(--text-muted)] md:text-lg">{project.summary}</p>
+                </div>
+
+                <div className="mt-7 grid gap-5 border-t border-[var(--line)] pt-5 md:grid-cols-3">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">Challenge</p>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-soft)]">{project.challenge}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">Approach</p>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-soft)]">{project.approach}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">Why it matters</p>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-soft)]">{project.impact}</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[var(--text-muted)]">
+                  <span>{project.stack.join(" · ")}</span>
+                </div>
+
+                <div className="mt-7 flex flex-wrap items-center gap-5 text-sm">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="inline-flex items-center gap-2 text-[var(--text)] transition-colors duration-150 hover:text-white"
+                  >
+                    Case study
+                    <span className="text-[var(--accent)]">→</span>
+                  </Link>
+                  <Link
+                    href={project.links.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[var(--text-soft)] transition-colors duration-150 hover:text-[var(--text)]"
+                  >
+                    GitHub
+                    <span className="text-[var(--accent)]">↗</span>
+                  </Link>
+                  {project.links.demo ? (
+                    <Link
+                      href={project.links.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-[var(--text-soft)] transition-colors duration-150 hover:text-[var(--text)]"
+                    >
+                      Live preview
+                      <span className="text-[var(--accent)]">↗</span>
+                    </Link>
+                  ) : null}
+                </div>
+              </div>
+
+              <ProjectPreview project={project} className={index % 2 === 1 ? "xl:order-1" : undefined} />
             </div>
-          ))}
-        </motion.div>
-
-        <div className="mt-6 flex items-center justify-center gap-5">
-          <button
-            onClick={() => goTo(page - 1)}
-            disabled={page === 0}
-            aria-label="Previous projects"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#9a6cff]/40 text-[#d8bbff] transition-colors hover:border-[#9a6cff] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {"<"}
-          </button>
-
-          <div className="flex gap-2">
-            {pages.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                aria-label={`Go to page ${i + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === page ? "w-6 bg-[#9a6cff]" : "w-2 bg-[#9a6cff]/30 hover:bg-[#9a6cff]/60"
-                }`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={() => goTo(page + 1)}
-            disabled={page === totalPages - 1}
-            aria-label="Next projects"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#9a6cff]/40 text-[#d8bbff] transition-colors hover:border-[#9a6cff] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {">"}
-          </button>
-        </div>
+          </motion.article>
+        ))}
       </div>
     </Section>
   );
