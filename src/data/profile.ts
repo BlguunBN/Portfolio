@@ -32,9 +32,9 @@ export const profile = {
   name: "Bilguuntugs",
   heroLabel: "Available for internships, collaborations, and meaningful product work",
   currentFocus: [
-    "Student-facing tools with cleaner workflows",
-    "AI interfaces that feel calm, useful, and credible",
-    "Software that ships with product-level polish",
+    "Student tools with cleaner workflows",
+    "Calm, useful AI interfaces",
+    "Practical software with polish",
   ],
   currentlyLearning: [
     "AI product design",
@@ -42,7 +42,7 @@ export const profile = {
     "Cloud deployment workflows",
   ],
   headline:
-    "I design and build practical software that feels calm, useful, and considered from the first screen to the final workflow.",
+    "I build practical software with product thinking and a strong eye for clarity.",
   role: "Computer Science Student · Product-Oriented Builder",
   location: "Ulaanbaatar / China",
   about:
