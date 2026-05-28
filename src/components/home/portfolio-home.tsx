@@ -3,27 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { homeNotes, type HomeNote, timelineEntries } from "@/src/data/home-content";
+import { timelineEntries } from "@/src/data/home-content";
 import { profile } from "@/src/data/profile";
 import { projects } from "@/src/data/projects";
-
-const noteTags = ["All", "AI", "Interface", "Product"] as const;
-
-type NoteTagFilter = (typeof noteTags)[number];
-
-type ContactFormState = {
-  message: string;
-  name: string;
-  contact: string;
-  opinion: string;
-};
-
-const initialContactForm: ContactFormState = {
-  message: "",
-  name: "",
-  contact: "",
-  opinion: "",
-};
 
 function ArrowRightIcon() {
   return (
@@ -51,11 +33,6 @@ function MailIcon() {
 
 export function PortfolioHome() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeNote, setActiveNote] = useState<HomeNote | null>(null);
-  const [activeTag, setActiveTag] = useState<NoteTagFilter>("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [contactForm, setContactForm] = useState<ContactFormState>(initialContactForm);
-  const [contactSuccess, setContactSuccess] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -234,67 +211,6 @@ export function PortfolioHome() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!activeNote) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActiveNote(null);
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [activeNote]);
-
-  const filteredNotes = homeNotes.filter((note) => {
-    const matchesTag = activeTag === "All" || note.tags.includes(activeTag);
-    const query = searchQuery.trim().toLowerCase();
-    const matchesQuery =
-      query.length === 0 ||
-      note.title.toLowerCase().includes(query) ||
-      note.excerpt.toLowerCase().includes(query) ||
-      note.body.some((paragraph) => paragraph.toLowerCase().includes(query));
-
-    return matchesTag && matchesQuery;
-  });
-
-  const handleContactChange = (field: keyof ContactFormState, value: string) => {
-    setContactSuccess("");
-    setContactForm((current) => ({ ...current, [field]: value }));
-  };
-
-  const handleContactSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!contactForm.message.trim()) {
-      setContactSuccess("Add a message first.");
-      return;
-    }
-
-    const subject = contactForm.name.trim() ? `Portfolio message from ${contactForm.name.trim()}` : "Portfolio message";
-    const bodyLines = [
-      contactForm.message.trim(),
-      "",
-      contactForm.name.trim() ? `Name: ${contactForm.name.trim()}` : "Name: Not provided",
-      contactForm.contact.trim() ? `Contact: ${contactForm.contact.trim()}` : "Contact: Not provided",
-      contactForm.opinion.trim() ? `Feedback: ${contactForm.opinion.trim()}` : "Feedback: Not provided",
-    ];
-
-    const mailtoUrl = `mailto:Bilguuntugs8888@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-
-    setContactSuccess("Draft prepared in your email client.");
-    setContactForm(initialContactForm);
-    window.location.href = mailtoUrl;
-  };
-
   return (
     <div className="portfolio-shell">
       <canvas id="bg-canvas" aria-hidden="true" />
@@ -316,9 +232,6 @@ export function PortfolioHome() {
             </li>
             <li>
               <a href="#experience">Background</a>
-            </li>
-            <li>
-              <a href="#blog">Notes</a>
             </li>
             <li>
               <a href="#contact">Contact</a>
@@ -504,85 +417,6 @@ export function PortfolioHome() {
           </div>
         </section>
 
-        <section id="blog" className="home-section">
-          <div className="home-wrap">
-            <p className="section-tag reveal" data-reveal>
-              Notes
-            </p>
-            <h2 className="section-title reveal delay-1" data-reveal>
-              Field notes
-            </h2>
-            <p className="section-sub reveal delay-2" data-reveal>
-              Short working notes on product decisions, interface quality, and where I think AI actually helps.
-            </p>
-
-            <div className="notes-controls reveal delay-3" data-reveal>
-              <div className="notes-search-wrap">
-                <svg className="notes-search-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-                  <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" strokeWidth="1.3" />
-                  <path d="M10.5 10.5 13 13" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-                </svg>
-                <input
-                  className="notes-search"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search notes..."
-                  aria-label="Search notes"
-                />
-              </div>
-
-              <div className="notes-tag-filters">
-                {noteTags.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    className={`notes-tag-btn${activeTag === tag ? " active" : ""}`}
-                    onClick={() => setActiveTag(tag)}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="notes-grid">
-              {filteredNotes.map((note, index) => (
-                <button
-                  key={note.slug}
-                  type="button"
-                  className={`note-card reveal delay-${Math.min(index + 1, 4)}`}
-                  data-reveal
-                  onClick={() => setActiveNote(note)}
-                >
-                  <div className="note-card__meta">
-                    <span>{note.date}</span>
-                    <span className="note-card__sep" />
-                    <span>{note.readTime}</span>
-                  </div>
-                  <h3 className="note-card__title">{note.title}</h3>
-                  <p className="note-card__excerpt">{note.excerpt}</p>
-                  <div className="note-card__footer">
-                    <div className="note-card__tags">
-                      {note.tags.map((tag) => (
-                        <span key={tag} className="note-card__tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <span className="note-card__cta">
-                      Read
-                      <ArrowUpRightIcon />
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {filteredNotes.length === 0 ? <p className="notes-empty">No notes match this search yet.</p> : null}
-          </div>
-        </section>
-
         <section id="contact" className="home-section">
           <div className="home-wrap">
             <div className="contact-layout">
@@ -594,7 +428,7 @@ export function PortfolioHome() {
                   Send me a message.
                 </h2>
                 <p className="contact-sub reveal delay-2" data-reveal>
-                  {profile.contactNote} You can send a message directly from here or reach out through the links below.
+                  {profile.contactNote} Reach out through the links below.
                 </p>
                 <div className="contact-btns reveal delay-3" data-reveal>
                   <a href="mailto:Bilguuntugs8888@gmail.com" className="portfolio-btn portfolio-btn--outline">
@@ -612,89 +446,6 @@ export function PortfolioHome() {
                   Direct email: <a href="mailto:Bilguuntugs8888@gmail.com">Bilguuntugs8888@gmail.com</a>
                 </p>
               </div>
-
-              <form className="contact-form-card reveal delay-3" data-reveal onSubmit={handleContactSubmit}>
-                <div className="contact-form-card__head">
-                  <div>
-                    <h3 className="contact-form-card__title">Quick message</h3>
-                    <p className="contact-form-card__sub">Required: your message. Optional: who you are, how I can reach you, and any portfolio feedback.</p>
-                  </div>
-                  <span className="contact-form-card__status-dot" aria-hidden="true" />
-                </div>
-
-                <div className="form-field">
-                  <label className="form-label" htmlFor="msgBody">
-                    Message<span className="form-required">*</span>
-                  </label>
-                  <textarea
-                    id="msgBody"
-                    name="message"
-                    required
-                    className="form-input form-textarea"
-                    placeholder="Tell me what you want to say..."
-                    value={contactForm.message}
-                    onChange={(event) => handleContactChange("message", event.target.value)}
-                  />
-                </div>
-
-                <div className="form-row">
-                  <div className="form-field">
-                    <label className="form-label" htmlFor="msgName">
-                      Who are you? <span className="form-optional">optional</span>
-                    </label>
-                    <input
-                      id="msgName"
-                      name="name"
-                      type="text"
-                      className="form-input"
-                      placeholder="Name, company, role..."
-                      value={contactForm.name}
-                      onChange={(event) => handleContactChange("name", event.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-field">
-                    <label className="form-label" htmlFor="msgContact">
-                      How can I connect? <span className="form-optional">optional</span>
-                    </label>
-                    <input
-                      id="msgContact"
-                      name="contact"
-                      type="text"
-                      className="form-input"
-                      placeholder="Email, LinkedIn, GitHub..."
-                      value={contactForm.contact}
-                      onChange={(event) => handleContactChange("contact", event.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="form-field">
-                  <label className="form-label" htmlFor="msgOpinion">
-                    What do you think? <span className="form-optional">optional</span>
-                  </label>
-                  <textarea
-                    id="msgOpinion"
-                    name="opinion"
-                    className="form-input form-textarea form-textarea--small"
-                    placeholder="Feedback on the portfolio, projects, writing, or anything else..."
-                    value={contactForm.opinion}
-                    onChange={(event) => handleContactChange("opinion", event.target.value)}
-                  />
-                </div>
-
-                <button type="submit" className="portfolio-btn portfolio-btn--fill contact-submit">
-                  Send message
-                </button>
-
-                {contactSuccess ? (
-                  <div className="contact-success" role="status">
-                    {contactSuccess}
-                  </div>
-                ) : null}
-
-                <p className="contact-hint">This form prepares an email draft in your mail client. A backend form service can be added later if you want direct site submissions.</p>
-              </form>
             </div>
           </div>
         </section>
@@ -711,39 +462,6 @@ export function PortfolioHome() {
           </div>
         </div>
       </footer>
-
-      {activeNote ? (
-        <div className="notes-modal open" role="dialog" aria-modal="true" aria-labelledby="note-modal-title">
-          <button type="button" className="notes-modal__backdrop" aria-label="Close note" onClick={() => setActiveNote(null)} />
-          <div className="notes-modal__panel">
-            <div className="notes-modal__header">
-              <span className="notes-modal__meta">
-                {activeNote.date} · {activeNote.readTime}
-              </span>
-              <button type="button" className="notes-modal__close" aria-label="Close note" onClick={() => setActiveNote(null)}>
-                ×
-              </button>
-            </div>
-            <div className="notes-modal__content">
-              <div className="notes-modal__tags">
-                {activeNote.tags.map((tag) => (
-                  <span key={tag} className="notes-modal__tag">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <h2 id="note-modal-title" className="notes-modal__title">
-                {activeNote.title}
-              </h2>
-              <div className="notes-modal__body">
-                {activeNote.body.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
