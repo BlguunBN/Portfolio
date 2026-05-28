@@ -9,7 +9,7 @@ import { projects } from "@/src/data/projects";
 
 function ArrowRightIcon() {
   return (
-    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" suppressHydrationWarning>
       <path d="M2 6.5h9M6.5 2 11 6.5 6.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -17,7 +17,7 @@ function ArrowRightIcon() {
 
 function ArrowUpRightIcon() {
   return (
-    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true" suppressHydrationWarning>
       <path d="M2 9 9 2M9 2H4M9 2v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -25,7 +25,7 @@ function ArrowUpRightIcon() {
 
 function MailIcon() {
   return (
-    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" suppressHydrationWarning>
       <path d="M2 4l4.5 3.5L11 4M2 4h9v6H2V4z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
