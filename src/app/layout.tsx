@@ -1,52 +1,50 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Instrument_Serif, Sora } from "next/font/google";
-
-import { ScrollProgress } from "@/src/components/ui/scroll-progress";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 
 import "./globals.css";
 
-const sora = Sora({
-  variable: "--font-sora",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: "400",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://t1portfolio.vercel.app"),
-  title: "Bilguuntugs | Product-Oriented Portfolio",
+  title: "Bilguuntugs | Software Developer & AI Engineer",
   description:
-    "Portfolio of Bilguuntugs: practical software projects, interface-driven product thinking, and product-focused development.",
+    "Portfolio of Bilguuntugs: software development, AI-focused product work, and interface-driven engineering.",
   keywords: [
     "Bilguuntugs",
     "portfolio",
     "software engineer",
+    "AI engineer",
     "computer science",
     "product builder",
     "Next.js",
   ],
   openGraph: {
-    title: "Bilguuntugs | Product-Oriented Portfolio",
+    title: "Bilguuntugs | Software Developer & AI Engineer",
     description:
-      "Practical software projects and product-focused engineering by Bilguuntugs.",
+      "Software development, AI-focused product work, and interface-driven engineering by Bilguuntugs.",
     url: "https://t1portfolio.vercel.app",
     siteName: "Bilguuntugs Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bilguuntugs | Product-Oriented Portfolio",
+    title: "Bilguuntugs | Software Developer & AI Engineer",
     description:
-      "Practical software projects and product-focused engineering by Bilguuntugs.",
+      "Software development, AI-focused product work, and interface-driven engineering by Bilguuntugs.",
   },
   icons: {
     icon: "/favicon.ico",
@@ -62,11 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        suppressHydrationWarning
-        className={`${sora.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
-      >
-        <ScrollProgress />
+      <body suppressHydrationWarning className={`${inter.variable} ${jetBrainsMono.variable} ${spaceGrotesk.variable} antialiased`}>
         {children}
       </body>
     </html>
